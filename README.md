@@ -14,6 +14,8 @@
     - [Explanations Galore](#explanations-galore)
     - [Tutorials](#tutorials)
   - [To DO](#to-do)
+## Who was Lavinia Warren?  
+"Mercy Lavinia Warren Stratton (October 31, 1842 – November 25, 1919) was an American proportionate dwarf, who was a circus performer and the wife of General Tom Thumb. She was known for her appearance in one silent film, The Lilliputians Courtship (1915)." Wikipida. You can learn more about Lavinia [here](https://en.wikipedia.org/wiki/Lavinia_Warren). 
 
 ## Giving commands to mariaDB:
 
