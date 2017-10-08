@@ -1,0 +1,31 @@
+DROP PROCEDURE IF EXISTS priceThreeSplit;
+
+DELIMITER //
+
+CREATE PROCEDURE priceThreeSplit()
+BEGIN
+	DECLARE done INT DEFAULT FALSE;
+	DECLARE x INT;
+	DECLARE cur1 CURSOR FOR SELECT price FROM prices;
+	DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+
+	OPEN cur1;
+
+	read_loop: LOOP
+		FETCH cur1 INTO x;
+		IF done THEN 
+			LEAVE read_loop;
+		END IF;
+		IF x < 100 THEN
+			INSERT INTO cur1Under100 VALUES (x);
+		ELSEIF x >= 100 AND x < 200 THEN
+			INSERT INTO cur1Inbetween100_200 VALUES (x);
+		ELSE 
+			INSERT INTO cur1above200 VALUES (x);
+		END IF;
+	END LOOP;
+
+	CLOSE cur1;
+END; //
+
+DELIMITER ;
