@@ -9,7 +9,7 @@ var connection = mysql.createConnection(credentials);
 
 //Global Variable
 var dbs = new Map();
-var table = new Map();
+//var table = new Map();
 var records = [];
 
 async.series ([
@@ -37,9 +37,34 @@ async.series ([
 							}
 							console.log("----- SHOW DATABASES -----");
 							console.log(dbs);
+							console.log("----- SHOW DATABASES -----");
 							callback(err);
 					}
 			});
+		},
+		function(callback) {
+				console.log("----- SHOW TABLES -----");
+				count = 0;
+				dbs.forEach(function (item, key, mapObj) {
+						query = 'SHOW TABLES in ' + key;
+						connection.query(query, function(err, tables, fields) {
+								count++;
+								if(err) {
+										console.log("ERROR in: " + query);
+								}
+								else {
+										for (i = 0; i < tables.length; i++) {
+												tableKey = 'Tables_in_' + key;
+												table = tables[i][tableKey];
+												old = dbs.get(key);
+												old.set(table, []);
+										}
+								}
+								if(count == dbs.size){
+									callback(err);
+								}
+						});
+				});
 		}
 ],
 function(err) {
@@ -49,5 +74,6 @@ function(err) {
 		else {
 				console.log("Async Complete");
 				connection.end();
+				console.log(dbs);
 		}
 });
