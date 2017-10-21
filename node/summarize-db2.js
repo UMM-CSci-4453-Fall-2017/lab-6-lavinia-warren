@@ -61,6 +61,7 @@ async.series ([
 										}
 								}
 								if(count == dbs.size){
+									console.log("----- SHOW TABLES -----");
 									callback(err);
 								}
 						});
