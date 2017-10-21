@@ -24,6 +24,22 @@ async.series ([
 							callback(err); //move on to next function.
 					}
 			});
+		},
+		function(callback) {
+			connection.query('SHOW DATABASES', function(err, rows, fields) {
+					if(err) {
+							console.log("ERROR in SHOW DATABASES");
+							callback();
+					}
+					else {
+							for(element in rows) {
+								dbs.set(rows[element].Database, new Map());
+							}
+							console.log("----- SHOW DATABASES -----");
+							console.log(dbs);
+							callback(err);
+					}
+			});
 		}
 ],
 function(err) {
