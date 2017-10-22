@@ -35,15 +35,15 @@ async.series ([
 							for(element in rows) {
 								dbs.set(rows[element].Database, new Map());
 							}
-							console.log("----- SHOW DATABASES -----");
-							console.log(dbs);
+							//console.log("----- SHOW DATABASES -----");
+							//console.log(dbs);
 							console.log("----- SHOW DATABASES -----");
 							callback(err);
 					}
 			});
 		},
 		function(callback) {
-				console.log("----- SHOW TABLES -----");
+				//console.log("----- SHOW TABLES -----");
 				count = 0;
 				dbs.forEach(function (item, key, mapObj) {
 						query = 'SHOW TABLES in ' + key;
@@ -69,7 +69,7 @@ async.series ([
 				});
 		},
 		function(callback) {
-				console.log("----- DESCRIBE TABLES -----");
+				//console.log("----- DESCRIBE TABLES -----");
 				dbCount = 0;
 				dbs.forEach(function (item, key, mapObj) {
 						doneWithTable = false;
@@ -91,8 +91,10 @@ async.series ([
 
 														recField = records[i].Field;
 														recType = records[i].Type;
+
 														tableObj = new Map ();
-														tableObj.set(recField, recType);
+														tableObj.set('field', recField);
+														tableObj.set('type', recType)
 
 														old[i] = tableObj;
 
@@ -109,7 +111,7 @@ async.series ([
 														tableCount = 0;
 														doneWithTable = true;
 														dbCount ++;
-														console.log("DBCount: " + dbCount);
+														//console.log("DBCount: " + dbCount);
 												}
 												if(dbCount == (dbs.size)) {
 														console.log("----- DESCRIBE TABLES -----");
@@ -128,7 +130,23 @@ function(err) {
 		else {
 				console.log("Async Complete");
 				connection.end();
+				console.log();
 				//console.log(dbs);
-				console.log(dbs.get('Dogxx000').get('CSQ_dept_lookup'));
+				//console.log(dbs.get('Dogxx000'));
+				printMap();
 		}
 });
+
+function printMap() {
+		dbs.forEach( function(dbItem, dbKey, dbObj) {
+				console.log('---|' + dbKey + '>');
+				table = dbs.get(dbKey);
+				table.forEach( function(tableItem, tableKey, tableObj) {
+						console.log('......|' + tableKey + '>');
+						for(i=0; i < tableItem.length; i++) {
+								//console.log(tableItem[i].get('field'));
+								console.log('        ' + tableItem[i].get('field') + '        ' + tableItem[i].get('type'));
+						}
+				});
+		});
+}
